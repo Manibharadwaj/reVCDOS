@@ -22,7 +22,7 @@ var ASM_CONSTS = {
     980171: () => {
         Module.hotelMission()
     },
-    980198: ($0, $1) => UTF8ToString($0) === location.host || UTF8ToString($1) === location.hostname || location.host.startsWith("localhost") || location.host.startsWith("127.0.0.1") || location.host.startsWith("192.168."),
+    980198: ($0, $1) => 1,
     980409: () => {
         Module.syncdone = 0;
         FS.syncfs(function(err) {
