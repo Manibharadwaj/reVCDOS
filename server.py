@@ -24,14 +24,16 @@ parser.add_argument("--vcsky_local", type=str, nargs='?', const='vcsky', default
                     help="Serve vcsky from local directory instead of proxy. Optionally specify path (default: vcsky/)")
 parser.add_argument("--vcbr_local", type=str, nargs='?', const='vcbr', default=None,
                     help="Serve vcbr from local directory instead of proxy. Optionally specify path (default: vcbr/)")
-parser.add_argument("--vcsky_url", type=str, default="https://cdn.dos.zone/vcsky/", help="Custom vcsky proxy URL")
-parser.add_argument("--vcbr_url", type=str, default="https://br.cdn.dos.zone/vcsky/", help="Custom vcbr proxy URL")
+parser.add_argument("--vcsky_url", type=str, default="https://cdn.dos.zone/vcsky/", help="Custom vcsky proxy URL (DEPRECATED: CDN may be down, use --packed instead)")
+parser.add_argument("--vcbr_url", type=str, default="https://br.cdn.dos.zone/vcsky/", help="Custom vcbr proxy URL (DEPRECATED: CDN may be down, use --packed instead)")
 parser.add_argument("--vcsky_cache", action="store_true", help="Cache vcsky files locally. If files are not found in the local directory, they will be downloaded from the specified URL and saved to the local directory.")
 parser.add_argument("--vcbr_cache", action="store_true", help="Cache vcbr files locally. If files are not found in the local directory, they will be downloaded from the specified URL and saved to the local directory.")
-parser.add_argument("--packed", type=str, nargs='?', const='revcdos.bin', default=None,
-                    help="Serve vcsky/ and vcbr/ from packed archive. Can be a local file path or URL. "
-                         "If URL, downloads to local file if not present. If no value specified, uses 'revcdos.bin'. "
-                         "Supports brotli passthrough.")
+DEFAULT_PACKED_URL = "https://folder.morgen.qzz.io/revcdos.bin"
+parser.add_argument("--packed", type=str, nargs='?', const='revcdos.bin', default=DEFAULT_PACKED_URL,
+                    help=f"Serve vcsky/ and vcbr/ from packed archive. Can be a local file path or URL. "
+                         f"If URL, downloads to local file if not present. If no value specified, uses 'revcdos.bin'. "
+                         f"Default: {DEFAULT_PACKED_URL} (auto-download if not present). "
+                         f"Supports brotli passthrough.")
 parser.add_argument("--unpacked", type=str, default=None,
                     help="Unpack archive to local folders and serve from there. Can be a local .bin file or URL. "
                          "Unpacks to unpacked/{md5_hash}/ and sets vcsky_local/vcbr_local automatically. "
