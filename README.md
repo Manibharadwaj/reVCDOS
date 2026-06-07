@@ -1,284 +1,215 @@
 # GTA Vice City — HTML5 Port (DOS Zone)
 
-# Port made by the DOS.Zone team: [dos.zone/reVCDOS](https://dos.zone/revcdos)
-# Official implementation: [GitHub](https://github.com/Carter54git/revcdos) 
+Port made by the DOS.Zone team: [dos.zone/reVCDOS](https://dos.zone/revcdos)
+Official implementation: [GitHub](https://github.com/Carter54git/revcdos)
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/13GFRIxTwVbixv0Vup9MSVXnB4SLmA3G7?usp=sharing)
 
-> **Fast Start:** Run the server in one click using Google Colab. Click the badge above, run the cell, and use the **"Launch Game"** button. The tunnel password will be copied automatically — just paste it on the page that opens.
-
 Web-based port of GTA: Vice City running in browser via WebAssembly.
 
-## Requirements
+---
 
-- Colab or Docker or Python 3.8+ or PHP 8.0+
-- Dependencies from `requirements.txt`
-
-## Quick Start
-
-1.  **Clone the repository**:
-    ```bash
-    git clone https://github.com/Lolendor/reVCDOS.git
-    cd reVCDOS
-    ```
-
-2. **Configure Assets** (Optional):
-
-   By default, the project uses **DOS Zone CDN** — no local assets needed. For offline hosting you can use:
-   *   **Packed archive** (`--packed` or `--unpacked`) — single `.bin` file with all assets
-   *   **Local folders** (`--vcsky_local`, `--vcbr_local`) — unpacked asset directories
-   *   **Cache mode** (`--vcsky_cache`, `--vcbr_cache`) — download from CDN once, serve locally after
-
-3. **Launch the Application**:
-   Choose one of the setup methods below:
-   * **Docker** (Recommended for most users) — fast and isolated.
-   * **PHP** — Simply upload the folder to your web server (FTP/Hosting).
-   * **Manual Installation** — for development and customization.
-
-## Setup & Running
-
-### Option 1: Using Docker (Recommended)
-The easiest way to get started is using Docker Compose:
+## 🚀 Quick Start (3 commands)
 
 ```bash
+git clone https://github.com/Manibharadwaj/reVCDOS.git
+cd reVCDOS
+python3 server.py
+```
+
+That's it. The server auto-downloads the game archive (~1GB, one-time) and starts at **http://localhost:8000**
+
+> **Note:** First run takes 5-15 min to download the game archive. After that it loads instantly from the cached file.
+
+## 📦 Requirements
+
+- **Python 3.8+** (with pip)
+- ~1GB disk space for the game archive (auto-downloaded on first run)
+
+## 🛠️ Setup Methods
+
+### Method 1: Python (Easiest — recommended)
+
+```bash
+# 1. Clone
+git clone https://github.com/Manibharadwaj/reVCDOS.git
+cd reVCDOS
+
+# 2. Install deps
+pip install -r requirements.txt
+
+# 3. Run (auto-downloads game archive on first run)
+python3 server.py
+```
+
+Open **http://localhost:8000** in your browser. Done!
+
+If pip gives permission errors, use a virtual env:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate   # Linux/Mac
+# OR: .venv\Scripts\activate   # Windows
+pip install -r requirements.txt
+python3 server.py
+```
+
+### Method 2: Docker
+
+```bash
+git clone https://github.com/Manibharadwaj/reVCDOS.git
+cd reVCDOS
 PACKED=https://folder.morgen.qzz.io/revcdos.bin docker compose up -d --build
 ```
 
-To configure server options via environment variables:
+Open **http://localhost:8000**
 
-```bash
-# Set port, enable auth and custom saves
-IN_PORT=3000 AUTH_LOGIN=admin AUTH_PASSWORD=secret CUSTOM_SAVES=1 docker compose up -d --build
-```
+Docker environment variables:
 
-| Environment Variable | Description |
-|---------------------|-------------|
-| `OUT_HOST` | External host (default: 0.0.0.0) |
-| `OUT_PORT` | External port (default: 8000) |
-| `IN_PORT` | Internal container port (default: 8000) |
+| Variable | Description |
+|----------|-------------|
+| `OUT_HOST` | External host (default: `0.0.0.0`) |
+| `OUT_PORT` | External port (default: `8000`) |
+| `IN_PORT` | Internal container port (default: `8000`) |
 | `AUTH_LOGIN` | HTTP Basic Auth username |
 | `AUTH_PASSWORD` | HTTP Basic Auth password |
 | `CUSTOM_SAVES` | Enable local saves (set to `1`) |
-| `VCSKY_LOCAL` | Serve vcsky from local directory (set to `1`, or path like `/data/vcsky`) |
-| `VCBR_LOCAL` | Serve vcbr from local directory (set to `1`, or path like `/data/vcbr`) |
-| `VCSKY_URL` | Custom vcsky proxy URL |
-| `VCBR_URL` | Custom vcbr proxy URL |
-| `VCSKY_CACHE` | Cache vcsky files locally while proxying (set to `1`) |
-| `VCBR_CACHE` | Cache vcbr files locally while proxying (set to `1`) |
-| `PACKED` | Serve from packed archive (filename or URL, e.g., `revcdos.bin`) |
-| `UNPACKED` | Unpack archive to local folders (filename or URL, auto-sets vcsky/vcbr paths) |
-| `PACK` | Pack a folder and serve from resulting archive (folder path or MD5 hash) |
+| `PACKED` | Serve from packed archive (URL or filename) |
 
-### Option 2: Local Installation
+### Method 3: Google Colab (No install needed)
 
-1. Install Python dependencies:
-```bash
-pip install -r requirements.txt
-```
+Click the **Open In Colab** badge above, run the cell, click "Launch Game".
 
-2. Start the server:
-```bash
-python server.py --packed https://folder.morgen.qzz.io/revcdos.bin
-```
+### Method 4: PHP Hosting (No Python needed)
 
-Server starts at `http://localhost:8000`
+Upload the repo contents to any PHP 8.0+ web host. The `index.php` and `.htaccess` handle everything.
 
-### Option 3: Shared Hosting on PHP (No installation)
+## 🎮 Playing the Game
 
-If you want to run the game from a hosted environment with `PHP 8.0` or above, just copy the contents of this repo to your desired hosting
-By default the `index.php` and `.htaccess` will get the job done. 
-## Server Options
+Just open **http://localhost:8000** in your browser. The game loads in the tab.
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `--port` | int | 8000 | Server port |
-| `--custom_saves` | flag | disabled | Enable local save files (saves router) |
-| `--login` | string | none | HTTP Basic Auth username |
-| `--password` | string | none | HTTP Basic Auth password |
-| `--vcsky_local` | string/flag | disabled | Serve vcsky from local directory. Use flag for `vcsky/` or specify path |
-| `--vcbr_local` | string/flag | disabled | Serve vcbr from local directory. Use flag for `vcbr/` or specify path |
-| `--vcsky_url` | string | `https://cdn.dos.zone/vcsky/` | Custom vcsky proxy URL |
-| `--vcbr_url` | string | `https://br.cdn.dos.zone/vcsky/` | Custom vcbr proxy URL |
-| `--vcsky_cache` | flag | disabled | Cache vcsky files locally while proxying |
-| `--vcbr_cache` | flag | disabled | Cache vcbr files locally while proxying |
-| `--packed` | string | disabled | Serve from packed archive file. Accepts file path or URL |
-| `--unpacked` | string | disabled | Unpack archive to `unpacked/{hash}/` and serve from there. Accepts file path or URL |
-| `--pack` | string | disabled | Pack a folder and serve from resulting `{hash}.bin` archive. Accepts folder path or MD5 hash |
+### URL Options
 
-**Examples:**
-```bash
-# Start on custom port
-python server.py --port 3000
+Add these to the URL: `http://localhost:8000/?option=value`
 
-# Enable local saves
-python server.py --custom_saves
-
-# Enable HTTP Basic Authentication
-python server.py --login admin --password secret123
-
-# Use local vcsky and vcbr files
-python server.py --vcsky_local --vcbr_local
-
-# Cache files locally while proxying (hybrid mode) (recommended)
-python server.py --vcsky_cache --vcbr_cache
-
-# Serve from packed archive (local file)
-python server.py --packed revcdos.bin
-
-# Serve from packed archive (download from URL if not present)
-python server.py --packed https://example.com/revcdos.bin
-
-# Unpack archive and serve from unpacked files
-python server.py --unpacked revcdos.bin
-
-# Stream-unpack from URL (downloads and unpacks simultaneously)
-python server.py --unpacked https://example.com/revcdos.bin
-
-# Pack a folder and serve from the resulting archive
-python server.py --pack /path/to/assets  # Creates {folder_hash}.bin
-
-# Pack from existing unpacked folder by MD5 hash
-python server.py --pack a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6  # Uses unpacked/{hash}/
-```
-
-> **Note:** HTTP Basic Auth is only enabled when both `--login` and `--password` are provided.
-
-> **Note:** By default, vcsky and vcbr are proxied from DOS Zone CDN. Use `--vcsky_local` and `--vcbr_local` flags to serve files from local directories instead. You can optionally specify a custom path.
-
-> **Note:** Use `--vcsky_cache` and `--vcbr_cache` to cache proxied files locally. Files are downloaded once and served from local storage on subsequent requests.
-
-> **Note:** `--packed` serves files directly from a compressed archive without unpacking (faster and more compressed). `--unpacked` extracts the archive once and serves from local files (if you want edit assets).
-
-> **Note:** When using URL with `--unpacked`, the archive is streamed and unpacked simultaneously during download using `downloader_brotli.py`.
-
-> **Note:** You can pass a raw MD5 hash (32 hex characters) to `--unpacked` to use an existing unpacked folder without needing the original archive. Example: if you have `unpacked/a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6/`, you can start the server with `--unpacked a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6`.
-
-> **Note:** `--pack` creates a packed archive from a folder containing subfolders (like `vcsky/` and `vcbr/`). Each subfolder is packed sequentially: the first creates the archive, subsequent ones are appended. After packing, the server automatically uses the created archive via `--packed` mode.
-
-## URL Parameters
-
-| Parameter | Values | Description |
-|-----------|--------|-------------|
-| `lang` | `en`, `ru` | Game language |
-| `cheats` | `1` | Enable cheat menu (F3) |
-| `request_original_game` | `1` | Request original game files before play |
+| Option | Values | What it does |
+|--------|--------|-------------|
+| `cheats` | `1` | Enable cheat menu (press **F3** in-game) |
+| `lang` | `en`, `ru` | Game language (default: English) |
+| `max_fps` | `1-240` | Cap frame rate (e.g. `60`) |
+| `configurable` | `1` | Show settings before launching |
 | `fullscreen` | `0` | Disable auto-fullscreen |
-| `max_fps` | `1-240` | Limit frame rate (e.g., `60` for 60 FPS) |
-| `configurable` | `1` | Show configuration UI before play button |
-
 
 **Examples:**
-- `http://localhost:8000/?lang=ru` — Russian version
-- `http://localhost:8000/?lang=en&cheats=1` — English + cheats
-- `http://localhost:8000/?configurable=1` — Show settings UI before play
+- `http://localhost:8000/?cheats=1` — play with cheats
+- `http://localhost:8000/?lang=ru&cheats=1` — Russian + cheats
+- `http://localhost:8000/?configurable=1` — settings menu first
 
-## Project Structure
+## 🎮 Cheats
 
-```
-├── server.py           # FastAPI proxy server
-├── index.php           # PHP proxy server
-├── .htaccess           # Apache config for PHP
-├── requirements.txt    # Python dependencies
-├── revcdos.bin         # Packed archive (optional)
-├── additions/          # Server extensions
-│   ├── auth.py         # HTTP Basic Auth middleware
-│   ├── cache.py        # Proxy caching and brotli decompression
-│   ├── packed.py       # Packed archive serving module
-│   └── saves.py        # Local saves router
-├── utils/              # Utility modules
-│   ├── packer_brotli.py # Archive packer with brotli compression
-│   └── downloader_brotli.py # Archive packer with brotli compression
-├── unpacked/           # Auto-created by --unpacked flag
-│   └── {md5_hash}/     # Unpacked files organized by source hash
-│       ├── vcsky/      # Decompressed game assets
-│       └── vcbr/       # Brotli-compressed binaries
-├── dist/               # Game client files
-│   ├── index.html      # Main page
-│   ├── game.js         # Game loader
-│   ├── index.js        # Module loader
-│   ├── GamepadEmulator.js  # Touch controls
-│   ├── idbfs.js        # IndexedDB filesystem
-│   ├── jsdos-cloud-sdk.js  # Cloud saves (DOS Zone)
-│   ├── jsdos-cloud-sdk-local.js  # Local saves (--custom_saves)
-│   └── modules/        # WASM modules
-│       ├── runtime.js      # WASM runtime initialization
-│       ├── loader.js       # Asset/package loading
-│       ├── fs.js           # Virtual filesystem
-│       ├── audio.js        # Audio system
-│       ├── graphics.js     # Rendering pipeline
-│       ├── events.js       # Input events handling
-│       ├── fetch.js        # Network requests (Real-time asset streaming)
-│       ├── syscalls.js     # System calls
-│       ├── main.js         # Main entry point
-│       ├── cheats.js       # Cheat engine (F3)
-│       ├── asm_consts/     # Language-specific ASM constants
-│       │   ├── en.js
-│       │   └── ru.js
-│       └── packages/       # Language-specific data packages
-│           ├── en.js
-│           └── ru.js
-├── vcbr/               # Brotli-compressed game data (optional)
-│   ├── vc-sky-en-v6.data.br
-│   ├── vc-sky-en-v6.wasm.br
-│   ├── vc-sky-ru-v6.data.br
-│   └── vc-sky-ru-v6.wasm.br
-└── vcsky/              # Decompressed assets (optional)
-    ├── fetched/        # English version files
-    │   ├── data/
-    │   ├── audio/
-    │   ├── models/
-    │   └── anim/
-    └── fetched-ru/     # Russian version files
-        ├── data/
-        ├── audio/
-        └── ...
-```
+Enable with `?cheats=1` in the URL. Press **F3** in-game to open the cheat menu:
 
-## Features
-
-- 🎮 Gamepad emulation for touch devices
-- ☁️ Cloud saves via js-dos key
-- 💾 Local saves (with `--custom_saves` flag)
-- 🌍 English/Russian language support
-- 🔧 Built-in cheat engine (memory scanner, cheats)
-- 📱 Mobile touch controls
-
-## Local Saves
-
-When local saves are enabled (`--custom_saves` flag), enter any 5-character identifier in the "js-dos key" input field on the start page. This identifier will be used to store your saves in the `saves/` directory on the server.
-
-Example: Enter `mykey` or `12345` — saves will be stored as `mykey_vcsky.saves` or `12345_vcsky.saves`.
-
-## Controls (Touch)
-
-Touch controls appear automatically on mobile devices. Virtual joysticks for movement and camera, context-sensitive action buttons.
-
-## Cheats
-
-Enable with `?cheats=1`, press **F3** to open menu:
 - Memory scanner (find/edit values)
 - All classic GTA VC cheats
 - AirBreak (noclip mode)
+- God mode, money, etc.
+
+## 💾 Saves
+
+### Cloud Saves (default)
+Enter any js-dos key on the start page. Saves sync via DOS Zone.
+
+### Local Saves
+Run with `--custom_saves` flag:
+```bash
+python3 server.py --custom_saves
+```
+Enter any 5+ character key — saves stored in `saves/` on the server.
+
+## ⚙️ Server Options
+
+```bash
+python3 server.py [OPTIONS]
+```
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--port PORT` | `8000` | Server port |
+| `--packed FILE/URL` | auto | Packed archive to serve from (default: auto-downloads) |
+| `--custom_saves` | off | Enable local save files |
+| `--login USER` | none | HTTP Basic Auth username |
+| `--password PASS` | none | HTTP Basic Auth password (auth requires both) |
+| `--vcsky_local` | off | Serve vcsky from local `vcsky/` dir |
+| `--vcbr_local` | off | Serve vcbr from local `vcbr/` dir |
+| `--vcsky_cache` | off | Cache proxied vcsky files locally |
+| `--vcbr_cache` | off | Cache proxied vcbr files locally |
+| `--unpacked FILE/URL` | off | Unpack archive then serve from local files |
+| `--pack DIR` | off | Pack a folder into archive, then serve it |
+
+**Common examples:**
+```bash
+# Default (auto-downloads game archive)
+python3 server.py
+
+# Custom port
+python3 server.py --port 3000
+
+# With auth + local saves
+python3 server.py --login admin --password secret --custom_saves
+
+# Use a local archive file
+python3 server.py --packed revcdos.bin
+
+# Cache CDN files locally (use if CDN works, saves bandwidth)
+python3 server.py --vcsky_cache --vcbr_cache
+```
+
+> ⚠️ **CDN Proxy mode** (running without `--packed`) relies on `cdn.dos.zone` which may be unavailable. Use `--packed` (now the default) for reliable operation.
+
+## 🖥️ Remote Setup (for a friend)
+
+Want to set this up on someone else's machine? Use **RustDesk** (free, open source remote desktop):
+
+1. **On your machine:** `brew install --cask rustdesk` (Mac) or download from [rustdesk.com](https://rustdesk.com)
+2. **On their machine:** Download & install RustDesk from [rustdesk.com](https://rustdesk.com)
+3. They share their **ID + Password** with you
+4. You connect → see their screen → open their terminal → run the Quick Start commands above
+
+## 📁 Project Structure
+
+```
+├── server.py           # FastAPI proxy server
+├── index.php           # PHP proxy server (shared hosting)
+├── .htaccess           # Apache config for PHP
+├── requirements.txt    # Python dependencies
+├── additions/          # Server extensions (auth, cache, packed, saves)
+├── utils/              # Utility modules (packer, downloader)
+├── dist/               # Game client files (HTML, JS, WASM modules)
+├── docker-compose.yml  # Docker setup
+└── colab_reVCDOS.ipynb # Colab notebook
+```
+
+## 📱 Mobile
+
+Touch controls appear automatically on mobile devices — virtual joysticks + action buttons.
 
 ## License
 
-MIT. Do what you want (but credit the port authors and me). Not affiliated with Rockstar Games.
+MIT. Do what you want (but credit the port authors). Not affiliated with Rockstar Games.
 
 ---
 
 **Authors:** DOS Zone ([@specialist003](https://github.com/okhmanyuk-ev), [@caiiiycuk](https://www.youtube.com/caiiiycuk), [@SerGen](https://t.me/ser_var))
 
-**Deobfuscated by**: [@Lolendor](https://github.com/Lolendor)
+**Deobfuscated by:** [@Lolendor](https://github.com/Lolendor)
 
 **Russian translation:** [GamesVoice](https://www.gamesvoice.ru/)
 
-**Added by the community:**
-* PHP Support by [Rohamgames](https://github.com/Rohamgames)
+**Community contributions:** PHP Support by [Rohamgames](https://github.com/Rohamgames), Touch controls by [@aboelnazer2010-cmd](https://github.com/aboelnazer2010-cmd)
 
-## Support [me](https://github.com/Lolendor)
+## Support
 
 If you find this project useful:
 
-- **TON / USDT (TON)**  `UQAyBchGEKi9NnNQ3AKMQMuO-SGEhMIAKFAbkwwrsiOPj9Gy`
+- **TON / USDT (TON)** `UQAyBchGEKi9NnNQ3AKMQMuO-SGEhMIAKFAbkwwrsiOPj9Gy`
 - **ETH / USDT (ERC-20)** `0x69Ec02715cF65538Bb03725F03Bd4c85D33F8AC0`
 - **TRX / USDT (TRC-20)** `THgNWT9MGW52tF8qFHbAWN25UR6WTeLDMY`
